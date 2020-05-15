@@ -55,7 +55,7 @@ import { EjecucionEddAmbosComponent } from './modules/ejecucion-edd-ambos/ejecuc
 import { EjecucionEddDesempenoComponent } from './modules/ejecucion-edd-desempeno/ejecucion-edd-desempeno.component';
 import { EjecucionEddDemeritosComponent } from './modules/ejecucion-edd-demeritos/ejecucion-edd-demeritos.component';
 import { ReporteEddFinalizadoComponent } from './modules/reporte-edd-finalizado/reporte-edd-finalizado.component';
-import { PdfmakeModule } from 'ng-pdf-make';
+
 
 
 @NgModule({
@@ -87,7 +87,6 @@ import { PdfmakeModule } from 'ng-pdf-make';
   imports: [
     BrowserModule,
     TabMenuModule,
-    PdfmakeModule,
     RadioButtonModule,
     AppRoutingModule,
     DefaultModule,
