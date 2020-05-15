@@ -1,0 +1,10 @@
+import { DatosBancarios } from '../models/datos-bancarios';
+export const DATOSBANCARIOSMOCK: DatosBancarios[] = [
+    { CLAVEBANCO: "Banamex", NOMBREBANCO: "Banamex", TITULAR: "Katia Palomares", NUMEROCUENTA: "7987879798789", CLABE: "7987879798789787855", FECHAAPERTURA: new Date().toLocaleDateString(), FECHAVIGENCIA: new Date().toLocaleDateString(), NUMEROPLAZA: "207000000007804", NOMBREPLAZA: " Directora,or de Área" },
+    { CLAVEBANCO: "Banamex", NOMBREBANCO: "Banamex", TITULAR: "Katia Palomares", NUMEROCUENTA: "7987879798789", CLABE: "7987879798789787855", FECHAAPERTURA: new Date().toLocaleDateString(), FECHAVIGENCIA: new Date().toLocaleDateString(), NUMEROPLAZA: "207000000007804", NOMBREPLAZA: " Directora,or de Área" },
+    { CLAVEBANCO: "Banamex", NOMBREBANCO: "Banamex", TITULAR: "Katia Palomares", NUMEROCUENTA: "7987879798789", CLABE: "7987879798789787855", FECHAAPERTURA: new Date().toLocaleDateString(), FECHAVIGENCIA: new Date().toLocaleDateString(), NUMEROPLAZA: "207000000007804", NOMBREPLAZA: " Directora,or de Área" },
+    { CLAVEBANCO: "Banamex", NOMBREBANCO: "Banamex", TITULAR: "Katia Palomares", NUMEROCUENTA: "7987879798789", CLABE: "7987879798789787855", FECHAAPERTURA: new Date().toLocaleDateString(), FECHAVIGENCIA: new Date().toLocaleDateString(), NUMEROPLAZA: "207000000007804", NOMBREPLAZA: " Directora,or de Área" },
+    { CLAVEBANCO: "Banamex", NOMBREBANCO: "Banamex", TITULAR: "Katia Palomares", NUMEROCUENTA: "7987879798789", CLABE: "7987879798789787855", FECHAAPERTURA: new Date().toLocaleDateString(), FECHAVIGENCIA: new Date().toLocaleDateString(), NUMEROPLAZA: "207000000007804", NOMBREPLAZA: " Directora,or de Área" },
+    { CLAVEBANCO: "Banamex", NOMBREBANCO: "Banamex", TITULAR: "Katia Palomares", NUMEROCUENTA: "7987879798789", CLABE: "7987879798789787855", FECHAAPERTURA: new Date().toLocaleDateString(), FECHAVIGENCIA: new Date().toLocaleDateString(), NUMEROPLAZA: "207000000007804", NOMBREPLAZA: " Directora,or de Área" }
+
+]

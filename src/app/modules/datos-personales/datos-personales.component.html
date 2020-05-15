@@ -1,0 +1,289 @@
+<script>
+    $('#datepicker').datepicker({
+        uiLibrary: 'bootstrap4'
+    });
+</script>
+<div class="container">
+<p-toast [style]="{marginTop: '1px'}" position="top-left" key="notifi"></p-toast>
+    <p-toast position="center" key="d"></p-toast>
+    <p-toast position="center"  key="c" (onClose)="rechazar()" [modal]="true" [baseZIndex]="5000">
+        <ng-template let-message pTemplate="message">
+            <div style="text-align: center">
+                <i class="pi pi-exclamation-triangle" style="font-size: 3em"></i>
+                <h3>{{message.summary}}</h3>
+                <p>{{message.detail}}</p>
+            </div>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-6">
+                    <button type="button" pButton (click)="guardarDatosPersonales()" label="Si"
+                        class="ui-button-success"></button>
+                </div>
+                <div class="ui-g-6">
+                    <button type="button" pButton (click)="rechazar()" label="No" class="ui-button-secondary"></button>
+                </div>
+            </div>
+        </ng-template>
+    </p-toast>
+    <fieldset class="border p-2" style="width: 100%;">
+        <legend class="w-auto">Consulta y actualización de datos personales</legend>
+        <div class="col-md-12">
+            <hr />
+            <h4 style="text-align: center">{{idServidorPublico}}</h4>
+    
+          
+        </div>
+        <form [formGroup]="datosPersonalesform" (ngSubmit)="confirmacionDatosPersonales()">
+            <div class="row">
+
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <span class="ui-float-label">
+                            <input id="txtNombre" type="text" size="30" pInputText formControlName="nombre"
+                                disabled="true" placeholder="Nombre">
+
+                        </span>
+
+                    </div>
+                </div>
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <span class="ui-float-label">
+                            <input type="text" id="txtApellidoP" size="30" pInputText formControlName="apellidoPaterno"
+                                disabled="true" placeholder="Apellido paterno">
+                        </span>
+
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <span class="ui-float-label">
+                            <input type="text" id="txtApellidoM" size="30" pInputText formControlName="apellidoMaterno"
+                                disabled="true" placeholder="Apellido materno">
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <span class="ui-float-label">
+                            <input type="text" id="txtcalendar" size="30" pInputText formControlName="fechaNacimiento"
+                                disabled="true" placeholder="Fecha de nacimiento">
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <span class="ui-float-label">
+                            <input type="text" id="txtCurp" size="30" pInputText formControlName="curp" disabled="true"
+                                placeholder="C.U.R.P.">
+                        </span>
+
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <span class="ui-float-label">
+                            <input type="text" id="txtRfc" size="30" pInputText formControlName="rfc" disabled="true"
+                                placeholder="R.F.C.">
+                        </span>
+
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <span class="ui-float-label">
+                            <input type="text" id="txtIssemym" size="30" pInputText placeholder="ISSEMYM">
+                        </span>
+
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <span class="ui-float-label">
+                            <input type="text" id="txtEdoNac" size="30" pInputText formControlName="nombrePais"
+                                disabled="true" placeholder="Estado de nacimiento">
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <span class="ui-float-label">
+                            <input type="text" id="txt" size="30" pInputText formControlName="nombrePais"
+                                disabled="true" placeholder="Municipio de nacimiento">
+                        </span>
+
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <span class="ui-float-label">
+                            <input type="text" id="txtTelefono" size="30" maxlength="15" pInputText
+                                formControlName="telefono" placeholder="Telefono">
+                        </span>
+                    </div>
+
+                    <div>
+                        <p-message severity="error" text="Telefono es requerido"
+                            *ngIf="!datosPersonalesform.controls['telefono'].valid&&datosPersonalesform.controls['telefono'].dirty">
+                        </p-message>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <span class="ui-float-label">
+                            <input type="email" id="correoElectronico" size="30" maxlength="80" name="correoElectronico"
+                                required pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                                formControlName="correoElectronico" pInputText placeholder="Correo electronico">
+                        </span>
+                    </div>
+                    <div>
+                        <p-message severity="error" text="Email invalido"
+                            *ngIf="!datosPersonalesform.controls['correoElectronico'].valid"></p-message>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <span class="ui-float-label">
+                        
+
+                            <p-dropdown [options]="cmbEstadoCivil"
+                                formControlName="nombreEstadoCivil" id="nombreEstadoCivil" [filter]="true" size="30"
+                                placeholder="Seleccione un estado Civil:" [disabled]="false"></p-dropdown>
+
+                        </span>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <span class="ui-float-label">
+                            <p-dropdown [options]="cmbSexo"
+                                formControlName="idSexo" id="idSexo" [filter]="true" size="30"
+                                placeholder="Seleccione sexo:" [disabled]="true"></p-dropdown>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <span class="ui-float-label">
+                            <p-dropdown [options]="cmbEstados" 
+                                formControlName="idEstado" id="idEstado" [filter]="true" size="30"
+                                [disabled]="true"
+                                placeholder="Seleccione un estado:"></p-dropdown>
+                        </span>
+                    </div>
+
+                    <div>
+                        <p-message severity="error" text="Estado es requerido"
+                            *ngIf="!datosPersonalesform.controls['idEstado'].valid&&datosPersonalesform.controls['idEstado'].dirty">
+                        </p-message>
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <p-dropdown [options]="cmbMunicipios" (onChange)="cargaColonias($event)"
+                  
+                        formControlName="idMunicipio" id="idMunicipio" [filter]="true" size="30"
+                        placeholder="Seleccione un municipio:"></p-dropdown>
+
+                    <div>
+                        <p-message severity="error" text="Municipio es requerido"
+                            *ngIf="!datosPersonalesform.controls['idMunicipio'].valid&&datosPersonalesform.controls['idMunicipio'].dirty">
+                        </p-message>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <span class="ui-float-label">
+
+                            <p-dropdown [options]="cmbColonias" formControlName="colonia" id="txtColoia" [filter]="true"
+                                size="30" placeholder="Seleccione una colonia:"></p-dropdown>
+                        </span>
+                    </div>
+
+                    <div>
+                        <p-message severity="error" text="Colonia es requerido"
+                            *ngIf="!datosPersonalesform.controls['colonia'].valid&&datosPersonalesform.controls['colonia'].dirty">
+                        </p-message>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <span class="ui-float-label">
+                            <input type="text" id="txtCalle" size="30" name="txtCalle" maxlength="50"
+                                formControlName="calle" pInputText required=true; placeholder="Calle">
+                        </span>
+                    </div>
+
+                    <div>
+                        <p-message severity="error" text="Calle es requerido"
+                            *ngIf="!datosPersonalesform.controls['calle'].valid&&datosPersonalesform.controls['calle'].dirty">
+                        </p-message>
+                    </div>
+
+                </div>
+
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <span class="ui-float-label">
+                            <input type="text" id="numeroInterior" size="30" maxlength="10"
+                                formControlName="numeroInterior" pInputText placeholder="Nº Interior">
+                        </span>
+                    </div>
+                    <div>
+                        <p-message severity="error" text="Nº Interior es requerido"
+                            *ngIf="!datosPersonalesform.controls['numeroInterior'].valid&&datosPersonalesform.controls['numeroInterior'].dirty">
+                        </p-message>
+                    </div>
+
+                </div>
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <span class="ui-float-label">
+                            <input type="text" id="numeroExterior" size="30" maxlength="10"
+                                formControlName="numeroExterior" pInputText placeholder="Nº Exterior">
+                        </span>
+                    </div>
+                    <div>
+                        <p-message severity="error" text="Nº Exterior es requerido"
+                            *ngIf="!datosPersonalesform.controls['numeroExterior'].valid&&datosPersonalesform.controls['numeroExterior'].dirty">
+                        </p-message>
+                    </div>
+
+                </div>
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="form-group">
+                        <span class="ui-float-label">
+                            <input type="text" id="codigoPostal" size="30" formControlName="codigoPostal" pInputText
+                                maxlength="5" placeholder="CP">
+                        </span>
+
+                    </div>
+                    <div>
+                        <p-message severity="error" text="CP es requerido"
+                            *ngIf="!datosPersonalesform.controls['codigoPostal'].valid&&datosPersonalesform.controls['codigoPostal'].dirty">
+                        </p-message>
+                    </div>
+
+                </div>
+                <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                    <button pButton type="submit" label="Guardar" [disabled]="!datosPersonalesform.valid"></button>
+
+                </div>
+
+            </div>
+        </form>
+    </fieldset>
+</div>
+<ngx-spinner></ngx-spinner>

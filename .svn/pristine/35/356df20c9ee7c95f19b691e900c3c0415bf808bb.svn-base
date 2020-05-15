@@ -1,0 +1,138 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Movimientosfump } from 'src/app/models/movimientosfump';
+import { MovimientosfumpService } from 'src/app/services/movimientosfump.service';
+import { Table } from 'primeng/table/table';
+import { NGXLogger } from 'ngx-logger';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { CalendarModule } from 'primeng/calendar/calendar';
+import { UtilsService } from 'src/app/services/utils.service';
+import * as moment from 'moment';
+
+@Component({
+  selector: 'app-movimientos-fump',
+  templateUrl: './movimientos-fump.component.html',
+  styleUrls: ['./movimientos-fump.component.css']
+})
+export class MovimientosFumpComponent implements OnInit {
+  movimientos: Movimientosfump[];
+  @ViewChild('dt') table: Table;
+  @ViewChild('endDate') calendarEndDate: any;
+  maxDate: Date;
+  es: any;
+  fechaInicio: Date;
+  fechaFin: Date;
+  startmessageVisible: boolean;
+  endmessageVisible: boolean;
+  theFormGroup: FormGroup;
+  ttltitulofump: string;
+  lblfolio: string;
+  lblfechamovimiento: string;
+  lbltramite: string;
+  lbltooltipfechas: string;
+  lblfiltrofechas: string;
+  lblfechainicio: string;
+  lblfechafin: string;
+  btnbuscar: string;
+  rangoAnios: string;
+
+  constructor(private service: MovimientosfumpService,
+    private logger: NGXLogger,
+    private builder: FormBuilder,
+    private utilsService: UtilsService) {
+    this.maxDate = new Date();
+    this.theFormGroup = this.builder.group({
+      startDate: ["", []],
+      endDate: ["", []]
+    });
+    this.obtenerEtiquetasFUMP();
+  }
+
+  ngOnInit(): void {
+    let anio = moment(new Date()).format("YYYY");
+    this.rangoAnios = '1995:' + anio;
+    this.iniciaCalendario();
+    this.movimientos = this.service.getMovimientosFump();
+  }
+  /**
+   * Inicia el calendario en español
+   */
+  iniciaCalendario() {
+    this.es = {
+      firstDayOfWeek: 1,
+      dayNames: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
+      dayNamesShort: ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"],
+      dayNamesMin: ["D", "L", "M", "X", "J", "V", "S"],
+      monthNames: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
+      monthNamesShort: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
+      today: 'Hoy',
+      clear: 'Borrar'
+    }
+  }
+  /**
+   * Captura los eventos del calendar
+   * @param event 
+   */
+  public onChange(event: any): void {
+
+
+  }
+  /**
+   * Valida que los campos no sean null
+   */
+  validateCalendar() {
+    this.startmessageVisible = false;
+    this.endmessageVisible = false;
+    if (this.fechaInicio == undefined) {
+      this.startmessageVisible = true;
+    }
+    if (this.fechaFin == undefined) {
+      this.endmessageVisible = true;
+    }
+  }
+
+  /**
+ * Obtiene las etiquetas de la pantalla
+ */
+  obtenerEtiquetasFUMP() {
+
+    const usuario = this.utilsService.ObtenerEtiquetasPagina('/movimientosFUMP', 'español (México)').subscribe(data => {
+      Object.keys(data).map((key) => {
+
+        if (key === 'ttl.titulofump') {
+          this.ttltitulofump = data[key];
+        }
+        if (key === 'lbl.folio') {
+          this.lblfolio = data[key];
+        }
+        if (key === 'lbl.fechamovimiento') {
+          this.lblfechamovimiento = data[key];
+        }
+        if (key === 'lbl.tramite') {
+          this.lbltramite = data[key];
+        }
+        if (key === 'lbl.tooltipfechas') {
+          this.lbltooltipfechas = data[key];
+        }
+        if (key === 'lbl.filtrofechas') {
+          this.lblfiltrofechas = data[key];
+        }
+        if (key === 'lbl.fechainicio') {
+          this.lblfechainicio = data[key];
+        }
+        if (key === 'lbl.fechafin') {
+          this.lblfechafin = data[key];
+        }
+        if (key === 'btn.buscar') {
+          this.btnbuscar = data[key];
+        }
+        /*  if (key === '') {
+           this. = data[key];
+         } */
+      });
+    });
+
+
+  }
+
+
+}

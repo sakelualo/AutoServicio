@@ -1,0 +1,10 @@
+<div class="container" style="min-height: 750px;">
+    <fieldset class="border p-2" style="width: 100%;">
+        <legend class="w-auto">Consulta de incidencias de tiempo</legend>
+        <div class="row">
+            <div class="col-md-12">               
+                <label *ngFor="let cat of categorias"> {{cat}} </label>
+            </div>
+        </div>
+    </fieldset>
+</div>

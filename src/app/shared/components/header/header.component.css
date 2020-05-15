@@ -1,0 +1,105 @@
+header {
+    padding: 0px;
+    background-color: #dce0e9;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+div.barraColores{
+    background-image: url("src/assets/Images/barra_colores.png") !important; 
+    height: 5px; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-size: 100%; 
+}
+
+.notification{
+    position: absolute;
+    top: -14px;
+    border: 1px solid #fff;
+    right: 83px;
+    font-size: 9px;
+    background: #f44336;
+    color: #fff;
+    min-width: 20px;
+    padding: 0 5px;
+    height: 20px;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 19px;
+    
+    display: block;
+}
+
+
+div.container{
+ background: #dce0e9;
+}
+
+
+
+
+.vertical-nav {
+    min-width: 17rem;
+    width: 17rem;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    right: 0;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s;
+  }
+  
+  .page-content {
+    width: calc(100% - 17rem);
+    margin-right: 17rem;
+    transition: all 0.4s;
+  }
+  
+  /* for toggle behavior */
+  
+  #sidebar.active {
+    margin-right: -17rem;
+  }
+  
+  #content.active {
+    width: 100%;
+    margin: 0;
+  }
+  
+  @media (max-width: 768px) {
+    #sidebar {
+      margin-right: -17rem;
+    }
+    #sidebar.active {
+      margin-right: 0;
+    }
+    #content {
+      width: 100%;
+      margin: 0;
+    }
+    #content.active {
+      margin-right: 17rem;
+      width: calc(100% - 17rem);
+    }
+  }
+  li{
+    background: white !important;
+  }
+  a{
+    background: white !important;
+    color: #45526e !important;
+    font-weight: bold;
+  }
+  h4{
+    color: #45526e !important;
+  }
+  p{
+    color: #45526e !important;
+  }
+
+
+
+
+
+  

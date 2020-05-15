@@ -1,0 +1,10 @@
+<div class="container" style="min-height: 750px;">
+    <fieldset class="border p-2" style="width: 100%;">
+        <legend class="w-auto">Consulta de perfil general</legend>
+        <div class="row">
+            <div class="col-md-12">
+               
+            </div>
+        </div>
+    </fieldset>
+</div>

@@ -1,0 +1,42 @@
+<div class="vertical-nav bg-dark float-right  active" id="sidebar"
+    style="z-index: 99999; background: white !important; color: #45526e !important;">
+    <div class="sidebar-header">
+        <div class="media d-flex align-items-center">
+
+            <div class="media-body" style="text-align: center; padding-top: 20px;" >
+                <h4 class="m-0" style="color: white;"> {{datosPersonales.MOMBRE}} {{datosPersonales.APELLIDOPATERNO}} {{datosPersonales.APELLIDOMATERNO}}
+                </h4>
+                <p class="font-weight-light text-muted mb-0" style="color: white;">{{datosPersonales.DESCRIESCOLARIDAD}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="py-4 px-3 mb-4 bg-dark" style="background: white !important; color: #45526e !important;">
+        <div class="media-body" style="background: white !important; color: #45526e !important;">
+            <h4 class="font-weight-white text-muted mb-0"></h4>
+        </div>
+    </div>
+
+    <p class="text-white font-weight-bold text-uppercase px-3 small pb-4 mb-0"></p>
+
+    <ul class="nav flex-column bg-dark mb-0" style="background: white !important; color: #45526e !important;">
+        <li class="nav-item">
+            <a  routerLink="/home" class="nav-link text-light font-italic bg-dark">
+                Inicio
+            </a>
+        </li>
+        <li class="nav-item" *ngFor="let menu of menu ">
+            <a href="#" class="nav-link text-light font-italic bg-dark" style="color: #45526e !important;"
+                routerLink="{{menu.url}}">
+                {{menu.nombreMenu}}
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a  class="nav-link text-light font-italic bg-dark" (click)="cerrarsession()">
+                Salir
+            </a>
+        </li>
+
+    </ul>
+</div>

@@ -1,0 +1,21 @@
+fieldset{
+    box-shadow: 5px 5px 5px;
+    background: white;
+    margin-bottom: 90px;
+}
+.border {
+	border: 2px solid #dee2e6 !important;
+}
+legend{
+    background-color: #45526e;  	
+	border-radius: 5px 5px 5px 5px;	
+    color: #fff;
+    height: 60px;
+    width: 50% !important;
+    text-align: center;
+}
+.btn-success {
+	color: #fff;
+	background-color: #45526e;
+	border-color: #45526e;
+}

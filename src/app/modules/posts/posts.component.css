@@ -1,0 +1,14 @@
+fieldset{
+    box-shadow: 5px 5px 5px;
+}
+.border {
+	border: 2px solid #dee2e6 !important;
+}
+legend{
+    background-color: #4da851;  	
+	border-radius: 5px 5px 5px 5px;	
+    color: #fff;
+    height: 70px;
+    width: 50% !important;
+    text-align: center;
+}

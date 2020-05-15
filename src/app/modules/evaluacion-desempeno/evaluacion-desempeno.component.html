@@ -1,0 +1,154 @@
+<div class="container" style="min-height: 750px;">
+    <p-toast [style]="{marginTop: '1px'}" position="top-left" key="notifi"></p-toast>
+    <p-toast position="center" key="d"></p-toast>
+    <p-toast position="center" key="c" [modal]="true" [baseZIndex]="5000">
+        <ng-template let-message pTemplate="message">
+            <div style="text-align: center">
+                <i class="pi pi-exclamation-triangle" style="font-size: 3em"></i>
+                <h3>{{message.summary}}</h3>
+                <p>{{message.detail}}</p>
+            </div>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-6">
+                    <button type="button" label="Si"
+                        class="ui-button-success"></button>
+                </div>
+                <div class="ui-g-6">
+                    <button type="button"  label="No" class="ui-button-secondary"></button>
+                </div>
+            </div>
+        </ng-template>
+    </p-toast>
+    <fieldset class="border p-2" style="width: 100%;">
+        <legend class="w-auto">EVALUACION DEL DESEMPEÑO</legend>
+        <div style="margin-bottom: 20px">
+            <button type="button" pButton (click)="showRegresar()" icon="pi pi-arrow-left" iconPos="left" label="Regresar"></button>
+        </div>
+        <div class="row">
+            
+            <p-table #dt  [columns]="cols" dataKey="PROCESO">
+                <ng-template pTemplate="caption">
+                    PROCESO DE EVALUACION VIGENTE
+                </ng-template>
+            </p-table>
+            
+            <div  class="col-md-12"> 
+                <div class="row center-h center-v">
+                    2020-1  <h6>-EVALUACIÓN DEL DESEMPEÑO PRIMER SEMESTRE 2020</h6>
+                </div>
+      
+                <div class="row center-h center-v">
+                    <div class="col-md-2">
+                        <h6>Proceso General:</h6>
+                    </div>
+                    <div>
+                        <h6>Inicia:  </h6>
+                    </div>
+                    <div class="col-md-2">
+                         01/02/2020
+                    </div>
+                    <div>
+                        <h6>Finaliza:  </h6>
+                    </div>
+                    <div class="col-md-2">
+                        30/04/2020
+                    </div>
+
+                </div>
+
+                <div class="row center-h center-v">
+                    <div class="col-md-2">
+                        <h6>Captura de Deméritos:</h6>
+                    </div>
+                    <div>
+                        <h6>Inicia:  </h6>
+                    </div>
+                    <div class="col-md-2">
+                         01/02/2020
+                    </div>
+                    <div>
+                        <h6>Finaliza:  </h6>
+                    </div>
+                    <div class="col-md-2">
+                        30/04/2020
+                    </div>
+
+                </div>
+
+                <div class="row center-h center-v">
+                    <div class="col-md-6">
+                            Este  proceso  de  Evaluación  del  Desempeño  esta  relacionada  con  la
+                            evaluación KPI's del Servidor Público2020A - Proceso KPI's 2020.
+                            Si  el Servidor  Público  no  ha  realizado  esta  evaluación,  no  podrá 
+                            ser evaluado por el responsable en este proceso vigente.
+                    </div>
+                </div>
+                <br />
+                <div class="row center-h center-v">
+                    <div class="col-md-2">
+                    </div>
+                    <div class="col-md-2">
+                        <p-button (onClick)="redirectDetalleedd()" label="Detalle del Proceso" [style]="{'width':'100%'}"></p-button>
+                    </div>
+                    <div class="col-md-2">
+                    </div>
+
+                </div>
+
+                <hr />
+            </div>
+            
+
+
+
+            <p-table #dt selectionMode="single" [filterDelay]="0" [value]="movimientos" [rows]="10"
+                        [rowsPerPageOptions]="[10,25,50]" [paginator]="true" [responsive]="true">
+                <ng-template pTemplate="caption">
+                HISTORIAL DE EVALUACIONES
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr class="tabletr">
+                        <th>Proceso de Evaluación</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
+                        <th>Desempeño</th>
+                        <th>Deméritos</th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+
+                
+
+                <ng-template pTemplate="body" let-rowData>
+                    <tr class="tabletr" [pSelectableRow]="rowData">
+                        <td style="width: 20px !important;">{{rowData.PROCESOEVA}}</td>
+                        <td style="width: 20px !important;">{{rowData.FECHAINI}}</td>
+                        <td style="width: 20px !important;">{{rowData.FECHAFIN}}</td>
+                        <td style="width: 20px !important;">{{rowData.DESEMPENO}}</td>
+                        <td style="width: 20px !important;">{{rowData.DEMERITOS}}</td>
+                        <td>
+                            <p-button (onClick)="redirectDetalleedd()"
+                            label="Ver detalle" [style]="{'width':'100%'}"></p-button>
+                        </td>
+
+                    </tr>
+                </ng-template>
+
+               
+
+                <ng-template pTemplate="emptymessage" let-columns>
+                    <tr>
+                      <td [attr.colspan]="columns.length">
+                        <strong> NO HAY NINGÚN PROCESO DE EVALUACIÓN DEL DESEMPEÑO VIGENTE. </strong>
+                      </td>
+                    </tr>
+                  </ng-template>
+
+
+            </p-table>
+
+
+        </div>
+    </fieldset>
+</div>
+<ngx-spinner></ngx-spinner>

@@ -1,0 +1,33 @@
+fieldset{
+    box-shadow: 5px 5px 5px;
+}
+.border {
+	border: 2px solid #dee2e6 !important;
+}
+legend{
+    background-color: #45526e;  	
+	border-radius: 5px 5px 5px 5px;	
+    color: #fff;
+    height: 70px;
+    width: 50% !important;
+    text-align: center;
+}
+fieldset{
+    background: white;   
+}
+@keyframes ui-progress-spinner-color {
+    100%,
+    0% {
+        stroke: #d62d20;
+    }
+    40% {
+        stroke: #0057e7;
+    }
+    66% {
+        stroke: #008744;
+    }
+    80%,
+    90% {
+        stroke: #ffa700;
+    }
+}

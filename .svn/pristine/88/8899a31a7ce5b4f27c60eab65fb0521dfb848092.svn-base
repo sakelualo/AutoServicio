@@ -1,0 +1,117 @@
+<div class="container" style="min-height: 750px;">
+    <fieldset class="border p-2" style="width: 100%;">
+        <legend class="w-auto">Consulta y actualización de datos personales</legend>
+        <div class="row">
+
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label for="txtNmbre">Nombre </label>
+                    <input type="text" class="form-control" id="txtNmbre">
+                </div>
+            </div>
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label for="txtApellidoP">Apellido paterno</label>
+                    <input type="text" class="form-control" id="txtApellidoP">
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label for="txtApellidoM">Apellido materno</label>
+                    <input type="text" class="form-control" id="txtApellidoM">
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label for="txtFechaNac">Fecha de nacimiento</label>
+                    <input type="text" class="form-control" id="txtFechaNac">
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label for="txtCurp">C.U.R.P.</label>
+                    <input type="text" class="form-control" id="txtCurp">
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label for="txtRfc">R.F.C.</label>
+                    <input type="text" class="form-control" id="txtRfc">
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label for="txtIssemym">ISSEMYM</label>
+                    <input type="text" class="form-control" id="txtIssemym">
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label for="txtEdoNac">Estado de nacimiento</label>
+                    <input type="text" class="form-control" id="txtEdoNac">
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label for="txt">Municipio de nacimiento</label>
+                    <input type="text" class="form-control" id="txt">
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label for="txtEscolaridad">Escolaridad</label>
+                    <input type="text" class="form-control" id="txtEscolaridad">
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label for="txtTelefono">Telefono</label>
+                    <input type="text" class="form-control" id="txtTelefono">
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label for="txtEmail">Correo electronico</label>
+                    <input type="text" class="form-control" id="txtEmail">
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label for="txtDomicilio">Domicilio</label>
+                    <input type="text" class="form-control" id="txtDomicilio">
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="form-group">
+                    <label for="txtEdoCivil">Estado civil</label>
+                    <input type="text" class="form-control" id="txtEdoCivil">
+                </div>
+            </div>
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+
+            </div>
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+
+            </div>
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+
+            </div>
+            <div class="col-12 col-sm-4 col-md-4 col-lg-4">
+                <button type="button" class="btn btn-success" style="width: 100%;">Guardar</button>
+            </div>
+
+        </div>
+    </fieldset>
+</div>

@@ -1,0 +1,12 @@
+export class DatosProfesionales {
+    IDNIVELESTUDIOS: string;
+    FECHAEMISIONCERTIFICADO: string;
+    FECHAVIGENCIACERTIFICADO: string;
+    NOMBRECERTIFICADO: string;
+    IDTIPOCERTIFICADO: string;
+    NOCERTIFICADO: string;
+    IDDATOPROFESIONAL: string;
+
+    NIVELESTUDIOS:string;
+    DESCRIPCIONCERTIFICADO:string;
+}

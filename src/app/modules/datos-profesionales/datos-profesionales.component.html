@@ -1,0 +1,259 @@
+<div class="container" style="min-height: 750px;">
+    <p-toast [style]="{marginTop: '1px'}" position="top-left" key="notifi"></p-toast>
+    <p-toast position="center"  key="d" ></p-toast>
+    <p-confirmDialog header="Confirmación" acceptLabel="Si" rejectLabel="No" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+    <p-toast position="center" key="c" (onClose)="rechazar()" [modal]="true" [baseZIndex]="5000">
+        <ng-template let-message pTemplate="message">
+            <div style="text-align: center">
+                <i class="pi pi-exclamation-triangle" style="font-size: 3em"></i>
+                <h3>{{message.summary}}</h3>
+                <p>{{message.detail}}</p>
+            </div>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-6">
+                    <button type="button" pButton (click)="guardarDatosProfesionales()" label="Si"
+                        class="ui-button-success"></button>
+                </div>
+                <div class="ui-g-6">
+                    <button type="button" pButton (click)="rechazar()" label="No" class="ui-button-secondary"></button>
+                </div>
+            </div>
+        </ng-template>
+    </p-toast>
+    <fieldset class="border p-2" style="width: 100%;">
+        <legend class="w-auto">Consulta y actualización de datos profesionales</legend>
+        <div class="row">
+
+
+            <div class="col-md-12">
+                <hr />
+                <h4 style="text-align: center">{{currentUser.DESCRIESCOLARIDAD}}</h4>
+                <div style="margin-bottom: 20px">
+                    <button type="button" pButton (click)="showSaveDialog()" label="Nuevo"
+                   ></button>
+                </div>
+              
+            </div>
+
+            
+            <p-table #dt [value]="datosProfesionales"
+                [paginator]="true" [rows]="10" [columns]="cols" dataKey="IDNIVELESTUDIOS"
+                [rowsPerPageOptions]="[10,25,50]">
+                <ng-template pTemplate="caption">
+                    Datos profesionales
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                            {{col.header}}
+
+                        </th>
+                        <th style="width: 68px;">Editar</th>
+                        <th style="width: 68px;">Eliminar</th>
+                    </tr>
+                    <tr>
+                        <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                            <input *ngSwitchCase="'IDNIVELESTUDIOS'" pInputText type="text"
+                                [style]="{'width':'100%','margin-top':'8px'}"
+                                (input)="dt.filter($event.target.value, col.field, 'contains')">
+                            <input *ngSwitchCase="'FECHAEMISIONCERTIFICADO'" pInputText type="text"
+                                [style]="{'width':'100%','margin-top':'8px'}"
+                                (input)="dt.filter($event.target.value, col.field, 'contains')">
+                            <input *ngSwitchCase="'FECHAVIGENCIACERTIFICADO'" pInputText type="text"
+                                [style]="{'width':'100%','margin-top':'8px'}"
+                                (input)="dt.filter($event.target.value, col.field, 'contains')">
+                            <input *ngSwitchCase="'NOMBRECERTIFICADO'" pInputText type="text"
+                                [style]="{'width':'100%','margin-top':'8px'}"
+                                (input)="dt.filter($event.target.value, col.field, 'contains')">
+                            <input *ngSwitchCase="'IDTIPOCERTIFICADO'" pInputText type="text"
+                                [style]="{'width':'100%','margin-top':'8px'}"
+                                (input)="dt.filter($event.target.value, col.field, 'contains')">
+                            <input *ngSwitchCase="'NOCERTIFICADO'" pInputText type="text"
+                                [style]="{'width':'100%','margin-top':'8px'}"
+                                (input)="dt.filter($event.target.value, col.field, 'contains')">
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData>
+                    <tr [pSelectableRow]="rowData">
+                        
+                        <td>{{rowData.NIVELESTUDIOS}}</td>
+                        <td>{{rowData.FECHAEMISIONCERTIFICADO | dateFormat}}</td>
+                        <td>{{rowData.FECHAVIGENCIACERTIFICADO | dateFormat}}</td>
+                        <td>{{rowData.NOMBRECERTIFICADO}}</td>
+                        <td>{{rowData.DESCRIPCIONCERTIFICADO}}</td>
+                        <td>{{rowData.NOCERTIFICADO}}</td>
+
+                        <td>
+                            <button pButton icon="pi pi-fw pi-pencil" (click)="seleccionaDatoProfesional(rowData)"></button>
+                        </td>
+                        <td>
+                            <button pButton icon="pi pi-fw pi-times" (click)="eliminaDatoProfesional(rowData)"></button>
+                        </td>
+
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="emptymessage" let-columns>
+                    <tr>
+                      <td [attr.colspan]="columns.length">
+                        <strong> No se encontraron registros </strong>
+                      </td>
+                    </tr>
+                  </ng-template>
+
+
+
+            </p-table>
+
+
+
+            <p-dialog header="Detalle" [(visible)]="displayDialog" [focusOnShow]="false" [responsive]="true"
+                showEffect="fade" [modal]="true" [style]="{width: '800px'}">
+                <form [formGroup]="datosProfesionalesForm" (ngSubmit)="confirmacionDatosProfesionales()">
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-12">
+                            <div class="ui-g-6">
+                                <label for="vin">Nivel de Estudios</label>
+                            </div>
+                            <div class="ui-g-6">
+                     
+                                <p-dropdown [options]="cmbNivelEstudios" 
+                                    formControlName="idNivelEstudios" id="idNivelEstudios" 
+                                            [filter]="true" size="30"
+                                            placeholder="Seleccione un nivel estudios:"></p-dropdown>    
+                            </div>
+
+
+                        </div>
+                        <div>
+                            <p-message severity="error" text="Id Nivel de Estudios es requerido"
+                                *ngIf="!datosProfesionalesForm.controls['idNivelEstudios'].valid&&datosProfesionalesForm.controls['idNivelEstudios'].dirty">
+                            </p-message>
+                        </div>
+
+                        <div class="ui-g-12">
+                            <div class="ui-g-6">
+                                <label for="year">Fecha Emisión Certificado</label>
+                            </div>
+                            <div class="ui-g-6">
+
+                                <p-calendar  [readonlyInput]="true" formControlName="fechaEmisionCertificado"
+                                id="fechaEmisionCertificado" [locale]="es"  
+                                [monthNavigator]="true" [yearNavigator]="true" [yearRange]="rangoAnios"
+                                [style]="{'width':'100%'}" placeholder="Fecha emision"></p-calendar>
+                            </div>
+                        </div>
+                        <div>
+                            <p-message severity="error" text="Fecha Emisión Certificado es requerido"
+                                *ngIf="!datosProfesionalesForm.controls['fechaEmisionCertificado'].valid&&datosProfesionalesForm.controls['fechaEmisionCertificado'].dirty">
+                            </p-message>
+                        </div>
+                        <div class="ui-g-12">
+                            <div class="ui-g-6">
+                                <label for="brand">Fecha Vigencia Certificado</label>
+                            </div>
+                            <div class="ui-g-6">
+                               
+                                <p-calendar  [readonlyInput]="true" formControlName="fechaVigenciaCertificado"
+                                id="fechaVigenciaCertificado" [locale]="es" 
+                                [monthNavigator]="true" [yearNavigator]="true" [yearRange]="rangoAnios"
+                                [style]="{'width':'100%'}" placeholder="Fecha vigencia"></p-calendar>
+                            </div>
+                        </div>
+                        <div>
+                            <p-message severity="error" text="Fecha Vigencia Certificado es requerido"
+                                *ngIf="!datosProfesionalesForm.controls['fechaVigenciaCertificado'].valid&&datosProfesionalesForm.controls['fechaVigenciaCertificado'].dirty">
+                            </p-message>
+                        </div>
+                        <div class="ui-g-12">
+                            <div class="ui-g-6">
+                                <label for="color">Nombre Certificado</label>
+                            </div>
+                            <div class="ui-g-6">
+                                <input pInputText id="nombreCertificado" size="49"
+                                formControlName="nombreCertificado" maxlength="20"/>
+                            </div>
+                        </div>
+                        <div>
+                            <p-message severity="error" text="Nombre Certificado es requerido"
+                                *ngIf="!datosProfesionalesForm.controls['nombreCertificado'].valid&&datosProfesionalesForm.controls['nombreCertificado'].dirty">
+                            </p-message>
+                        </div>
+
+                        <div class="ui-g-12">
+                            <div class="ui-g-6">
+                                <label for="color">Certificado</label>
+                            </div>
+                            <div class="ui-g-6">
+                                <p-dropdown [options]="cmbTipoCertificado" 
+                                    formControlName="idTipoCertificado" id="idTipoCertificado" 
+                                            [filter]="true" size="30" 
+                                            
+                                            placeholder="Seleccione un tipo Certificado:"></p-dropdown>     
+                                
+                            </div>
+                        </div>
+                        <div>
+                            <p-message severity="error" text="Nº Certificado es requerido"
+                                *ngIf="!datosProfesionalesForm.controls['idTipoCertificado'].valid&&datosProfesionalesForm.controls['idTipoCertificado'].dirty">
+                            </p-message>
+                        </div>
+
+                        <div class="ui-g-12">
+                            <div class="ui-g-6">
+                                <label for="color">Nº Certificado</label>
+                            </div>
+                            <div class="ui-g-6">
+                                <input pInputText id="noCertificado" size="49"
+                                maxlength="10" formControlName="noCertificado" />
+                            </div>
+                        </div>
+                        <div>
+                            <p-message severity="error" text="Emisor certificado es requerido"
+                                *ngIf="!datosProfesionalesForm.controls['noCertificado'].valid&&datosProfesionalesForm.controls['noCertificado'].dirty">
+                            </p-message>
+                        </div>
+
+
+                        <div class="ui-g-12">
+                            <div class="ui-g-6">
+                                <label for="color">Emisor</label>
+                            </div>
+                            <div class="ui-g-6">
+                                <p-dropdown [options]="cmbEmisores" 
+                                    formControlName="idEmisor" id="idEmisor" 
+                                            [filter]="true" size="30"
+                                            placeholder="Seleccione un emisor:"></p-dropdown>     
+                                
+                            </div>
+                        </div>
+                        <div>
+                            <p-message severity="error" text="Emisor es requerido"
+                                *ngIf="!datosProfesionalesForm.controls['idEmisor'].valid&&datosProfesionalesForm.controls['idEmisor'].dirty">
+                            </p-message>
+                        </div>
+
+
+                    </div>
+
+                    <p-footer>
+                        <div style="text-align:center">
+
+                            <button pButton type="submit" label="Guardar"
+                                [disabled]="!datosProfesionalesForm.valid"></button>
+
+
+                        </div>
+                    </p-footer>
+                </form>
+               <br>
+                <div style="text-align:center">
+                    <p-button label="Cancelar" (onClick)="no()"></p-button>
+                </div>
+            </p-dialog>
+           
+        </div>
+    </fieldset>
+</div>
+<ngx-spinner></ngx-spinner>

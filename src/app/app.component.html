@@ -1,0 +1,20 @@
+<router-outlet></router-outlet>
+
+
+
+<p-dialog [(visible)]="displayModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="100000" [closable]="false"
+    [draggable]="false" [resizable]="false">
+    <div class="popup" pd-popup="popupNew" style="text-align: center;">
+        <div class="popup-inner">
+            <!-- <img  src="../assets/Images/alerta.png" style="width: 130px; height: 120px;">  -->
+            <h1 class="display-1">
+                <countdown #cd1 [config]="config" (event)="handleEvent($event)" ></countdown>
+            </h1>
+            <h2>Cierre de sesión automatica</h2>
+            <p>Haz clic para ingresar nuevamente al sistema</p>
+            <p><a pd-popup-close="popupNew" href="#" class="btn btn-danger" (click)="cerrarDialog()">Ok</a></p>
+            <a class="popup-close" pd-popup-close="popupNew" href="#"> </a>
+        </div>
+    </div>
+
+</p-dialog>

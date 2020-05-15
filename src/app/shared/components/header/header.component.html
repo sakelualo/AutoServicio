@@ -1,0 +1,72 @@
+<header>
+    <script type="text/javascript">
+
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar, #content').toggleClass('active');
+        });
+
+    </script>
+
+    <div class="page-content p-5 active" id="content" style="background: #dce0e9;">
+        <nav class="navbar navbar-expand-sm float-right" style="background: #dce0e9;">
+            <ul class="navbar-nav" style="background: #dce0e9;">
+                <li class="nav-item" style="margin-right: 10px; background: #dce0e9 !important ;">
+                    <a href="#" class="dropdown-toggle float-right" data-toggle="dropdown" role="button"
+                        style="background: #dce0e9 !important;" aria-haspopup="true" aria-expanded="false">
+                        {{ lblnotificaciones }}
+                        (<b>2</b>)</a>
+                    <ul class="dropdown-menu notify-drop">
+                        <div class="notify-drop-title">
+                            <div class="row">
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="drop-content">
+                            <li>
+
+                                <div class="col-md-9 col-sm-9 col-xs-9 pd-l0">
+                                    <a href="" routerLink="/constanciaNoAdeudo">Aconstancia de adeudos</a>
+
+                                    <hr>
+                                </div>
+                            </li>
+                            <li>
+
+                                <div class="col-md-9 col-sm-9 col-xs-9 pd-l0">
+                                    <a href="" routerLink="/historialLaboral">Constancia de historial laboral</a>
+
+
+                                </div>
+                            </li>
+
+                        </div>
+
+
+
+
+
+
+                    </ul>
+                </li>
+                <li class="nav-item" style="background: #dce0e9 !important ;">
+                    <!-- Toggle button -->
+                    <button id="sidebarCollapse" type="button"
+                        class="btn btn-dark bg-dark rounded-pill shadow-sm px-4 mb-4 float-right">
+                        <small class="text-uppercase font-weight-bold">{{ lblMenu }}</small>
+                    </button>
+
+                    <!-- Page content -->
+                </li>
+            </ul>
+        </nav>
+
+
+
+
+    </div>
+
+
+</header>

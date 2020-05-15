@@ -1,0 +1,15 @@
+footer{
+    padding: 0px;     
+    background: #45526e;
+    background-position: center; 
+    background-repeat: repeat-x; 
+    background-size: 100%;
+    color: white;
+    font-size: small;
+}
+ul li a {
+    color: white;
+}
+a{
+    color: white;
+}

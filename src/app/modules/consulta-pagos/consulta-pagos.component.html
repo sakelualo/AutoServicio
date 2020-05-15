@@ -1,0 +1,140 @@
+<form [formGroup]="theFormGroup">
+<div class="container" style="min-height: 750px;">
+
+    <p-toast [style]="{marginTop: '1px'}" position="top-left" key="notifi"></p-toast>
+    <p-toast position="center" key="d"></p-toast>
+    <p-toast position="center" key="c" (onClose)="rechazar()" [modal]="true" [baseZIndex]="5000">
+        <ng-template let-message pTemplate="message">
+            <div style="text-align: center">
+                <i class="pi pi-exclamation-triangle" style="font-size: 3em"></i>
+                <h3>{{message.summary}}</h3>
+                <p>{{message.detail}}</p>
+            </div>
+        </ng-template>
+    </p-toast>
+
+    <fieldset class="border p-2" style="width: 100%;">
+        <legend class="w-auto">Consulta de pagos</legend>
+
+
+
+        <div class="row">
+
+
+            <div class="col-md-12">
+                <hr />
+                <label style="font-size: small; font-style: oblique;">*Para mostrar resultados, es importante que
+                    realice la búsqueda a través de fechas</label>
+                <h6>Filtros de búsqueda *:</h6>
+                <div class="row">
+
+                    <div class="col-md-2">
+                        <p-calendar [readonlyInput]="true" [locale]="es" [monthNavigator]="true" [yearNavigator]="true"
+                            [yearRange]="rangoAnios" [style]="{'width':'100%'}" placeholder="Fecha inicio  *:"
+                            [maxDate]="maxDate" [(ngModel)]="fechaInicio" formControlName="startDate" ValidatorCalendar>
+                        </p-calendar>
+
+                        <div *ngIf="!theFormGroup.valid">
+                            <p-message severity="error" text="Fecha inicio es menor a fecha fin"
+                                *ngIf="theFormGroup.get('startDate').hasError('startDateIsLess')">
+                            </p-message>
+                            <p-message severity="error" text="Fecha inicio es requerido"
+                                *ngIf="theFormGroup.get('startDate').hasError('startDateIsRequired')">
+                            </p-message>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-2">
+                        <p-calendar [readonlyInput]="true" [locale]="es" [monthNavigator]="true" [yearNavigator]="true"
+                            formControlName="endDate" [yearRange]="rangoAnios" [style]="{'width':'100%'}"
+                            placeholder="Fecha fin  *:" [maxDate]="maxDate" [(ngModel)]="fechaFin" ValidatorCalendar>
+                        </p-calendar>
+                        <div *ngIf="!theFormGroup.valid">
+                            <p-message severity="error" text="Fecha inicio es menor a fecha fin"
+                                *ngIf="theFormGroup.get('endDate').hasError('startDateIsLess')">
+                            </p-message>
+                            <p-message severity="error" text="Fecha fin es requerido"
+                                *ngIf="theFormGroup.get('endDate').hasError('endDateIsRequired')">
+                            </p-message>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+
+                        <button pButton type="button" label="Buscar" [style]="{'width':'100%'}"
+                            (click)="consultaPagos()" [disabled]="theFormGroup.invalid"></button>
+                    </div>
+
+                </div>
+                <hr />
+            </div>
+
+            <div class="col-md-12">
+
+
+                <p-table #dt [value]="pagos" [rows]="10" [rowsPerPageOptions]="[10,25,50]" [paginator]="true"
+                    [columns]="cols">
+
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                                {{col.header}}
+
+                            </th>
+                        </tr>
+                        <tr>
+                            <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                                <input *ngSwitchCase="'IDSERVIDORPUBLICO'" pInputText type="text"
+                                    [style]="{'width':'100%','margin-top':'8px'}"
+                                    (input)="dt.filter($event.target.value, col.field, 'contains')">
+                                <input *ngSwitchCase="'IDPAGO'" pInputText type="text"
+                                    [style]="{'width':'100%','margin-top':'8px'}"
+                                    (input)="dt.filter($event.target.value, col.field, 'contains')">
+                                <input *ngSwitchCase="'ESTATUSPAGO'" pInputText type="text"
+                                    [style]="{'width':'100%','margin-top':'8px'}"
+                                    (input)="dt.filter($event.target.value, col.field, 'contains')">
+                                <input *ngSwitchCase="'TIPOPAGO'" pInputText type="text"
+                                    [style]="{'width':'100%','margin-top':'8px'}"
+                                    (input)="dt.filter($event.target.value, col.field, 'contains')">
+                                <input *ngSwitchCase="'FECHAPAGO'" pInputText type="text"
+                                    [style]="{'width':'100%','margin-top':'8px'}"
+                                    (input)="dt.filter($event.target.value, col.field, 'contains')">
+                                <input *ngSwitchCase="'IMPORTEPAGOGRAVADO'" pInputText type="text"
+                                    [style]="{'width':'100%','margin-top':'8px'}"
+                                    (input)="dt.filter($event.target.value, col.field, 'contains')">
+                                <input *ngSwitchCase="'IMPORTEPAGOEXENTO'" pInputText type="text"
+                                    [style]="{'width':'100%','margin-top':'8px'}"
+                                    (input)="dt.filter($event.target.value, col.field, 'contains')">
+
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData>
+                        <tr [pSelectableRow]="rowData">
+                            <td>{{rowData.IDSERVIDORPUBLICO}}</td>
+                            <td>{{rowData.IDPAGO}}</td>
+                            <td>{{rowData.ESTATUSPAGO}}</td>
+                            <td>{{rowData.TIPOPAGO}}</td>
+                            <td>{{rowData.FECHAPAGO | dateFormat}}</td>
+                            <td>{{rowData.IMPORTEPAGOGRAVADO | currency:'':'symbol'}}</td>
+                            <td>{{rowData.IMPORTEPAGOGRAVADO | currency:'':'symbol'}}</td>
+
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="emptymessage" let-columns>
+                        <tr>
+                            <td [attr.colspan]="columns.length">
+                                <strong>No se encontraron registros</strong>
+                            </td>
+                        </tr>
+                    </ng-template>
+
+
+                </p-table>
+            </div>
+        </div>
+    </fieldset>
+</div>
+</form>
+<ngx-spinner></ngx-spinner>

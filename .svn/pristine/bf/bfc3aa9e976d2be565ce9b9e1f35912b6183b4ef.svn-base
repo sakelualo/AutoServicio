@@ -1,0 +1,112 @@
+<div class="container" style="min-height: 750px;">
+    <fieldset class="border p-2" style="width: 100%;">
+        <legend class="w-auto">{{ ttltitulopagbancarios }}</legend>
+        <div class="row">
+
+            <div class="col-md-12">
+
+                <p-table #dt selectionMode="single" [paginator]="true" [rows]="10" [value]="datosBancarios"
+                    [rowsPerPageOptions]="[10,25,50]" [filterDelay]="0" [responsive]="true">
+
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>{{ lblbanco }}</th>
+                            <th>{{lblnumcuenta}}</th>
+                            <th>{{lbltitular}}</th>
+                            <th>{{lblfechaapertura}}</th>
+                            <th>{{lblfechavigencia}}</th>
+                            <th>{{lblplaza}}</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input pInputText type="text" [style]="{'width':'100%','margin-top':'8px'}"
+                                    (input)="dt.filter($event.target.value, 'NOMBREBANCO', 'contains')">
+                            </th>
+                            <th>
+                                <input pInputText type="text" [style]="{'width':'100%','margin-top':'8px'}"
+                                    (input)="dt.filter($event.target.value, 'NUMEROCUENTA', 'contains')">
+                            </th>
+                            <th>
+                                <input pInputText type="text" [style]="{'width':'100%','margin-top':'8px'}"
+                                    (input)="dt.filter($event.target.value, 'TITULAR', 'contains')">
+                            </th>
+                            <th>
+                                <input pInputText type="text" [style]="{'width':'100%','margin-top':'8px'}"
+                                    (input)="dt.filter($event.target.value, 'FECHAAPERTURA', 'contains')">
+                            </th>
+                            <th>
+                                <input pInputText type="text" [style]="{'width':'100%','margin-top':'8px'}"
+                                    (input)="dt.filter($event.target.value, 'FECHAVIGENCIA', 'contains')">
+                            </th>
+                            <th>
+                                <input pInputText type="text" [style]="{'width':'100%','margin-top':'8px'}"
+                                    (input)="dt.filter($event.target.value, 'NOMBREPLAZA', 'contains')">
+                            </th>
+
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-car>
+                        <tr>
+                            <td style="width: 20px !important;">{{car.NOMBREBANCO}}</td>
+                            <td style="width: 20px !important;">{{car.NUMEROCUENTA}}</td>
+                            <td style="width: 20px !important;">{{car.TITULAR}}</td>
+                            <td style="width: 20px !important;">{{car.FECHAAPERTURA  | dateFormat}}</td>
+                            <td style="width: 20px !important;">
+                                {{car.FECHAVIGENCIA  | dateFormat }}</td>
+                            <td style="width: 20px !important;">{{car.NOMBREPLAZA}}</td>
+
+
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage" let-columns>
+                        <tr>
+                            <td [attr.colspan]="6" style="font-weight: bold;">
+                                No se encontraron registros
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                </p-table>
+            </div>
+            <p-dialog header="Agregar un nuevo dato bancario" [(visible)]="displayDialog" showEffect="fade"
+                [modal]="true" [style]="{width: '400px'}">
+                <div class="ui-g ui-fluid" *ngIf="datosBancarios">
+                    <div class="ui-g-12">
+                        <div class="ui-g-4">
+                            <label for="txtBanco">Banco</label>
+                        </div>
+                        <div class="ui-g-8">
+                            <p-dropdown id="idBanco" [options]="bancos" [(ngModel)]="bancoSelected"
+                                placeholder="Seleccionar" optionLabel="NOMBREBANCO" [showClear]="true"></p-dropdown>
+                        </div>
+                    </div>
+                    <div class="ui-g-12">
+                        <div class="ui-g-4">
+                            <label for="year">Número de cuenta</label>
+                        </div>
+                        <div class="ui-g-8">
+                            <input pInputText id="year" />
+                        </div>
+                    </div>
+
+
+                </div>
+                <p-footer>
+                    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                        <button type="button" pButton icon="pi pi-times" (click)="hideDialog()"
+                            label="Cancelar"></button>
+                        <button type="button" pButton icon="pi pi-check" (click)="hideDialog()"
+                            label="Guardar"></button>
+                    </div>
+                </p-footer>
+            </p-dialog>
+
+
+
+
+
+
+
+        </div>
+    </fieldset>
+</div>

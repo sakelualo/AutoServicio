@@ -1,0 +1,132 @@
+<div class="container" style="min-height: 750px;">
+    <p-toast [style]="{marginTop: '1px'}" position="top-left" key="notifi"></p-toast>
+    <p-toast position="center" key="d"></p-toast>
+    <p-toast position="center" key="c" [modal]="true" [baseZIndex]="5000">
+        <ng-template let-message pTemplate="message">
+            <div style="text-align: center">
+                <i class="pi pi-exclamation-triangle" style="font-size: 3em"></i>
+                <h3>{{message.summary}}</h3>
+                <p>{{message.detail}}</p>
+            </div>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-6">
+                    <button type="button" label="Si"
+                        class="ui-button-success"></button>
+                </div>
+                <div class="ui-g-6">
+                    <button type="button"  label="No" class="ui-button-secondary"></button>
+                </div>
+            </div>
+        </ng-template>
+    </p-toast>
+    <fieldset class="border p-2" style="width: 100%;">
+        <legend class="w-auto">EVALUACION DEL DESEMPEÑO</legend>
+        <div style="margin-bottom: 20px">
+            <button type="button" pButton (click)="showRegresar()" icon="pi pi-arrow-left" iconPos="left" label="Regresar"></button>
+        </div>
+
+
+        <p-table #dt selectionMode="single"  [responsive]="true">
+            <ng-template pTemplate="caption">
+                <div class="row center-h center-v">
+                    EJECUCIÓN DE EVALUACIÓN DEL DESEMPEÑO
+                    <br />
+                    <br />
+                    2020-1   -EVALUACIÓN DEL DESEMPEÑO PRIMER SEMESTRE 2020
+                    <br />
+                    <br />
+                    20706005000000L   -DIRECCIÓN GENERAL DE RECURSOS MATERIALES
+                    <br />
+                    <br />
+                    Evaluador:  907050000 - AGUILAR MARTINEZ CARMEN YAMCID
+                    <br />
+                    <br />
+                    Evaluado:   909067500 - GARCIA CID JORGE ALBERTO
+                    <br />
+                    <br />
+                   
+                </div>
+                
+
+            </ng-template>
+        </p-table>
+
+        <br />
+        <br />
+
+        <p-tabMenu [model]="items3">
+            
+        </p-tabMenu>
+
+
+        <p-table #dt selectionMode="single" [value]="preguntas" [filterDelay]="0"
+                      [responsive]="true">
+                <ng-template pTemplate="caption">
+                    <div class="row center-h center-v">
+                        3 Competencias Aptitudinales
+                        <br />
+                        <br />
+                        Comprende el desarrollo emocional de la persona servidora pública, 
+                        enfocado a la sana interacción social en su ambiente de trabajo. 
+                        Equivale al 50 por ciento de la calificación total.
+                        <br />
+                        <br />
+
+                    </div>
+                    
+
+                </ng-template>
+
+
+                <ng-template pTemplate="body" let-rowData>
+
+                    <tr class="tabletr" [pSelectableRow]="rowData">
+                        <th colspan="6">
+                            <p>{{rowData.PREGUNTA}}</p>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="tableth">
+                            <p-radioButton name="nunca" value="Nunca" label="Nunca" [(ngModel)]="selectedValue"></p-radioButton>
+                        </th>
+                        <th class="tableth">
+                            <p-radioButton name="casinunca" value="Casi Nunca" label="Casi Nunca" [(ngModel)]="selectedValue"></p-radioButton>
+                        </th>
+                        <th class="tableth">
+                            <p-radioButton name="raravez" value="Rara Vez" label="Rara Vez" [(ngModel)]="selectedValue"></p-radioButton>
+                        </th>
+                        <th class="tableth">
+                            <p-radioButton name="algveces" value="Algunas Veces" label="Algunas Veces" [(ngModel)]="selectedValue"></p-radioButton>
+                        </th>
+                        <th class="tableth">
+                            <p-radioButton name="confre" value="Con Frecuencia" label="Con Frecuencia" [(ngModel)]="selectedValue"></p-radioButton>
+                        </th>
+                        <th class="tableth">
+                            <p-radioButton name="siempre" value="Siempre" label="Siempre" [(ngModel)]="selectedValue"></p-radioButton>
+                        </th>
+                    </tr>
+                    
+                </ng-template>
+
+
+
+            </p-table>
+
+            <br />
+
+            <div class="ui-g">
+                <div class="ui-g-2"></div>
+                <div class="ui-g-2">
+                    <button type="button" pButton label="Guardar Avance"   icon="pi pi-save" iconPos="right" ></button>
+                </div>
+                <div class="ui-g-2"></div>
+                <div class="ui-g-2"></div>
+                <div class="ui-g-2">
+                    <button type="button" pButton (click)="redirectReporteEddFinalizado()" label="Siguiente"  icon="pi pi-arrow-right" iconPos="right" ></button>
+                </div>
+                <div class="ui-g-2"></div>
+            </div>
+            <br />
+
+    </fieldset>
+</div>

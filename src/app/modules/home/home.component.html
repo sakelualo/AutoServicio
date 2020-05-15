@@ -1,0 +1,103 @@
+<swiper [config]="configCategorias" style="height: 100px; width: 50%; margin-left: auto; margin-right:auto; ">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide" *ngFor="let cate of categorias;">
+            <div style="width: 250px; height: 100px; text-align: center; margin: auto; display: flex;">
+                <!-- <h5 class="card-title" style="font-size: small !important; margin: auto; padding: auto;">{{cate.NOMBRECATEGORIA}}</h5> -->
+                <img class="card-img-top" src="{{cate.IMAGEN}}" alt="Card image cap" (click)="obtenerCategoria(cate)">
+                <button type="button"  (click)="obtenerCategoria(cate)" style="height: 100% !important; color: white; background: rgba(0,0,0,0.6);
+                    z-index: 20;
+                    position: absolute;     margin-top: 55px;
+                    width: 83%;"   label="Ver datalle"></button>
+            </div>
+
+
+
+
+
+        </div>
+
+    </div>
+    <!-- Add Pagination -->
+    <div class="swiper-pagination"></div>
+    <!-- Add Arrows -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</swiper>
+
+<swiper [config]="config" style="height: 70%; width: 60%; padding-top: 5em;">
+    <div class="swiper-wrapper">
+        <div class="swiper-slide" *ngFor="let ev of eventos;">
+            <div class="card" style="width: 18rem; box-shadow: 0px 15px 5px -2px rgba(0,0,0,0.75);">
+                <img class="card-img-top" src="{{ev.IMAGENPRE}}" alt="Card image cap"
+                    style="width: 250px; height: 250px; margin: auto;">
+                <div class="card-body">
+                    <h5 class="card-title" style="font-size: small !important;">{{ev.NOMBREEVENTO}}</h5>
+                    <p class="card-text" style="font-size: small !important;">{{  ev.FECHAINICIO | dateFormat }}
+                        al
+                        {{ev.FECHAFIN | dateFormat }}</p>
+
+                    <button type="button" (click)="showDialog(ev)" pButton icon="pi pi-external-link"
+                        label="{{ lbldetalle }}"></button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Add Pagination -->
+    <div class="swiper-pagination"></div>
+    <!-- Add Arrows -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</swiper>
+
+<p-dialog [(visible)]="displayDialog" showEffect="fade" [modal]="true" [style]="{width: '1000px'}">
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12" style="width: 30%; height: 30%; margin: auto;">
+            <img class="card-img-top" src="{{detalleEvento.IMAGENEXT}}" alt="Card image cap">
+            <label>{{detalleEvento.FECHAINICIO | dateFormat  }}
+                al
+                {{detalleEvento.FECHAFIN |dateFormat }}</label>
+        </div>
+        <div class="ui-g-12">
+            <p>{{detalleEvento.TEXTOGENERAL}}</p>
+        </div>
+        <div class="ui-g-12">
+
+
+            <a href="url"> <i class="pi pi-download" style="font-size: large;"> Documento.pdf</i></a>
+
+
+        </div>
+        <div class="ui-g-12">
+
+            <a href="{{detalleEvento.ENLACEEXTERNO}}" *ngIf="valueIsEmpty(detalleEvento.ENLACEEXTERNO)"> <i
+                    class="pi pi-external-link" style="font-size: large;">{{detalleEvento.ENLACEEXTERNO}}</i></a>
+
+
+
+
+        </div>
+
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="pi pi-times" (click)="hideDialog()" label="Cerrar"></button>
+
+        </div>
+    </p-footer>
+</p-dialog>
+
+<p-dialog [(visible)]="displayDialogLogOut" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="1000000"
+    [closable]="false" [draggable]="false" [resizable]="false">
+    <div class="popup" pd-popup="popupNew" style="text-align: center;">
+        <div class="popup-inner">
+            <img src="../../../assets/Images/alerta.png" style="width: 150px; height: 150px;">
+
+            <h2>Cierre de sesión automatica</h2>
+            <p>Para ingresar inicie sesión desde el portal SIGAP </p>
+            <p></p>
+            <a class="popup-close" pd-popup-close="popupNew" href="#"> </a>
+        </div>
+    </div>
+
+</p-dialog>

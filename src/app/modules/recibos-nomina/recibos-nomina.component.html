@@ -1,0 +1,104 @@
+<form [formGroup]="theFormGroup">
+
+    <p-toast [style]="{marginTop: '1px'}" position="top-left"></p-toast>
+    <p-toast key="c" (onClose)="rechazar()" [modal]="true" [baseZIndex]="5000">
+        <ng-template let-message pTemplate="message">
+            <div style="text-align: center">
+                <i class="pi pi-exclamation-triangle" style="font-size: 3em"></i>
+                <h3>{{message.summary}}</h3>
+                <p>{{message.detail}}</p>
+            </div>
+        </ng-template>
+    </p-toast>
+
+    <div class="container" style="min-height: 750px;">
+        <fieldset class="border p-2" style="width: 100%;">
+            <legend class="w-auto">{{ttlrecibosnomina}}</legend>
+            <div class="row">
+                <div class="col-md-12">
+                    <hr />
+                    <label style="font-size: small; font-style: oblique;">{{lbltooltipfechas}}</label>
+                    <h6>{{lblfiltrofechas}}</h6>
+                    <div class="row">
+
+                        <div class="col-md-2">
+                            <p-calendar formControlName="startDate" [readonlyInput]="true" [locale]="es"
+                                [(ngModel)]="fechaInicio" [monthNavigator]="true" [yearNavigator]="true"
+                                [required]="true" [yearRange]="rangoAnios" [style]="{'width':'100%'}"
+                                placeholder="{{lblfechainicio}}" [maxDate]="maxDate" dateFormat="dd-MM-yy" ngModel
+                                ValidatorCalendar></p-calendar>
+                            <div *ngIf="!theFormGroup.valid">
+                                <p-message severity="error" text="Fecha inicio es menor a fecha fin"
+                                    *ngIf="theFormGroup.get('startDate').hasError('startDateIsLess')">
+                                </p-message>
+                                <p-message severity="error" text="Fecha inicio es requerido"
+                                    *ngIf="theFormGroup.get('startDate').hasError('startDateIsRequired')">
+                                </p-message>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-2">
+                            <p-calendar formControlName="endDate" [readonlyInput]="true" [locale]="es"
+                                [monthNavigator]="true" [yearNavigator]="true" [yearRange]="rangoAnios" [required]="true"
+                                [(ngModel)]="fechaFin" [style]="{'width':'100%'}" placeholder="{{lblfechafin}}"
+                                [maxDate]="maxDate" dateFormat="dd-MM-yy" ngModel ValidatorCalendar></p-calendar>
+                            <div *ngIf="!theFormGroup.valid">
+                                <p-message severity="error" text="Fecha inicio es menor a fecha fin"
+                                    *ngIf="theFormGroup.get('endDate').hasError('startDateIsLess')">
+                                </p-message>
+                                <p-message severity="error" text="Fecha fin es requerido"
+                                    *ngIf="theFormGroup.get('endDate').hasError('endDateIsRequired')">
+                                </p-message>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+
+                            <button pButton type="button" label="{{btnbuscar}}" [style]="{'width':'100%'}"
+                                [disabled]="theFormGroup.invalid" (click)="obtenerRecibosNomina()"></button>
+                        </div>
+
+                    </div>
+                    <hr />
+                </div>
+
+                <div class="col-md-12">
+                    <p-table [value]="archivos" [rows]="10" [rowsPerPageOptions]="[10,25,50]" [paginator]="true">
+                        <ng-template pTemplate="header" [responsive]="true">
+                            <tr>
+                                <th>{{lblfecha}}</th>
+                                <th>{{lblperiodo}}</th>
+                                <th>{{lblnombre}}</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-car>
+                            <tr>
+                                <td style="width: 20px !important;">{{car.FECHAFINPERIODO | dateFormat }}</td>
+                                <td style="width: 20px !important;">{{car.FECHAINICIOPERIODO | dateFormat }} al
+                                    {{car.FECHAFINPERIODO | dateFormat }}
+                                </td>
+                                <td style="width: 20px !important;">{{car.PERIODO}}</td>
+
+                                <td><button type="button" pButton icon="pi pi-file" iconPos="left" label="XML"
+                                        style="margin-right: 0.5em;" class="ui-button-success"></button></td>
+                                <td><button type="button" pButton icon="pi pi-file-pdf" iconPos="left" label="PDF"
+                                        class="ui-button-warning"></button></td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage" let-columns>
+                            <tr>
+                                <td [attr.colspan]="5" style="font-weight: bold;">
+                                    No se encontraron registros
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+</form>
+<ngx-spinner></ngx-spinner>

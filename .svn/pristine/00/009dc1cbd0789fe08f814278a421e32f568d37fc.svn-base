@@ -1,0 +1,93 @@
+import { Injectable } from '@angular/core';
+import { ConstanciaAdeudo } from '../models/constancia-adeudo';
+import { CONSTANCIAADEUDO } from '../mocks/mock-constancia-adeudo';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { catchError } from 'rxjs/operators';
+import { RespuestaApi } from '../repuesta/respuesta-api';
+import { throwError } from 'rxjs';
+import { CatalogoNotificaciones } from '../models/notificaciones';
+
+@Injectable({
+  providedIn: 'root'
+})
+
+
+export class UtilsService {
+
+  urlCat: string = `${environment.HOST}/frwsr_LPSAUT_CONS_CAT.php`;
+  urlDat: string = `${environment.HOST}/frwsr_LPSAUT_CONS_DAT.php`;
+  estados:CatalogoNotificaciones[];
+  
+
+  constructor(private http: HttpClient) { }
+
+
+
+
+  obtenerEtiquetasPagina(urlen: string, idioma:string ) {
+
+    console.log('Dentro del MicroService UtilsService-ObtenerEtiquetasPagina');
+    console.log(urlen);
+    console.log(idioma);
+
+    let data = {
+      "url": urlen,
+      "idioma": idioma
+    };
+
+    let body = JSON.stringify({ data });
+
+    console.log('DATA' + data);
+    console.log('BODY' + body);
+
+    return this.http.post<any>(`${environment.BASEENPOINT_ETIQUETAS}`, data)
+    .pipe(
+      catchError(e => {
+        if (e.status == 400) {
+          return throwError(e);
+        }
+        console.error(e)
+        return throwError(e);
+      })
+    );;
+
+  }
+
+
+
+
+
+  obtenerNotificaciones(cveservidor: string) {
+
+    console.log('Dentro del MicroService UtilsService-obtenerNotificaciones');
+    console.log(cveservidor);
+
+    
+
+    return this.http.post<CatalogoNotificaciones[]>(`${environment.BASEENPOINT_NOTIFICACIONES}`, cveservidor)
+    .pipe(
+      catchError(e => {
+        if (e.status == 400) {
+          return throwError(e);
+        }
+        console.error(e)
+        return throwError(e);
+      })
+    );;
+
+  }
+
+
+  public agregarAuthorizationHeader() {
+
+    const httpHeaders = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    return httpHeaders;
+
+
+  }
+
+
+}

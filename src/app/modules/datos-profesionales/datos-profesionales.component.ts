@@ -1,0 +1,314 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { DatosProfesionales } from 'src/app/models/datos-profesionales';
+import { DatosprofesionalesService } from 'src/app/services/datosprofesionales.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { Message } from 'primeng/api';
+import { Table } from 'primeng/table/table';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { BitacoraService } from 'src/app/services/bitacora.service';
+import { switchMap } from 'rxjs/operators';
+import { GeneralesService } from 'src/app/services/generales.service';
+import { Combo } from 'src/app/models/combo';
+import { DatosProfesionalesDTO } from 'src/app/dto/datosProfesionalesDTO';
+import { AuthenticationServiceService } from 'src/app/services/authentication-service.service';
+import { NGXLogger } from 'ngx-logger';
+import { DatosPersonales } from 'src/app/models/datos-personales';
+import * as moment from 'moment';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { UtilsService } from 'src/app/services/utils.service';
+
+@Component({
+  selector: 'app-datos-profesionales',
+  templateUrl: './datos-profesionales.component.html',
+  styleUrls: ['./datos-profesionales.component.css']
+})
+export class DatosProfesionalesComponent implements OnInit {
+
+  //Variables Globales de la clase
+  datosProfesionales: DatosProfesionales[] = [];
+  displayDialog: boolean;
+  msgs: Message[] = [];
+  idServidorPublico: string = '';
+  datosProfesionalesForm: FormGroup;
+  cols: any[];
+  @ViewChild('dt') table: Table;
+  edicion: boolean;
+  es: any;
+  cmbTipoCertificado: Combo[] = [];
+  cmbNivelEstudios: Combo[] = [];
+  cmbEmisores: Combo[] = [];
+  currentUser: DatosPersonales = new DatosPersonales();
+  rangoAnios:string;
+  descnotifica: string;
+  index: number = 0;
+  idcancelar: string;
+
+
+//Constructor de la clase
+  constructor(private datosProfesionalesService: DatosprofesionalesService,
+    private messageService: MessageService,
+    private fb: FormBuilder,
+    private utilsService: UtilsService,
+    private bitacoraService: BitacoraService,
+    private generalesService: GeneralesService,
+    private spinner: NgxSpinnerService,
+    private confirmationService: ConfirmationService,
+    private authenticationService: AuthenticationServiceService,
+    private logger: NGXLogger) { }
+
+  //Metodo principal de la clase 
+  ngOnInit(): void {
+    let today = new Date();
+    let anio = moment(new Date()).format("YYYY");
+    this.rangoAnios='1995:'+anio;
+    if (this.authenticationService.currentUserValue) {
+      this.logger.debug('Usuario logueado en Home');
+      this.authenticationService.currentUser.subscribe(usr => {
+        this.currentUser = usr;
+        console.log(usr);
+        this.idServidorPublico = usr.CLAVESERVIDOR;
+      });
+    }
+    //Obtiene notificaciones en base al idServidorPublico
+    this.obtenerNotificaciones();
+    this.iniciarCatalogos();
+    this.iniciaCalendario();
+    this.iniciarForm();
+    this.cols = [
+      { field: 'IDNIVELESTUDIOS', header: 'Nivel Estudios' },
+      { field: 'FECHAEMISIONCERTIFICADO', header: 'Fecha Emision' },
+      { field: 'FECHAVIGENCIACERTIFICADO', header: 'Vigencia Certificado' },
+      { field: 'NOMBRECERTIFICADO', header: 'Nombre Certificado' },
+      { field: 'IDTIPOCERTIFICADO', header: 'Certificado' },
+      { field: 'NOCERTIFICADO', header: 'No Certificado' }
+    ];
+    this.obtenerDatosProfesionales(this.idServidorPublico);
+
+  }
+
+  obtenerDatosProfesionales(idServidorPublico: string) {
+    this.spinner.show();
+    this.datosProfesionalesService.obtenerDatosProfesionales(idServidorPublico)
+      .subscribe(data => {
+        this.datosProfesionales = data.response;
+        this.spinner.hide();
+      });
+  }
+
+  showSaveDialog() {
+    this.displayDialog = true;
+    this.iniciarForm();
+    this.edicion = false;
+  }
+
+  confirmacionDatosProfesionales() {
+    this.messageService.clear();
+    this.messageService.add({ key: 'c', sticky: true, severity: 'warn', summary: '¿Estás seguro?', detail: 'Confirmar para continuar' });
+  }
+
+  guardarDatosProfesionales() {
+    this.spinner.show();
+    let idDatoProfesional: string;
+    let datosProfesionalesDTO = new DatosProfesionalesDTO();
+    console.log(this.datosProfesionalesForm);
+    datosProfesionalesDTO.idNivelEstudios = this.datosProfesionalesForm.value['idNivelEstudios'];
+    datosProfesionalesDTO.fechaEmisionCertificado = this.datosProfesionalesForm.value['fechaEmisionCertificado'];
+    datosProfesionalesDTO.fechaVigenciaCertificado = this.datosProfesionalesForm.value['fechaVigenciaCertificado'];
+    datosProfesionalesDTO.nombreCertificado = this.datosProfesionalesForm.value['nombreCertificado'];
+    datosProfesionalesDTO.idTipoCertificado = this.datosProfesionalesForm.value['idTipoCertificado'];
+    datosProfesionalesDTO.noCertificado = this.datosProfesionalesForm.value['noCertificado'];
+    datosProfesionalesDTO.idEmisor= this.datosProfesionalesForm.value['idEmisor'];
+    if (this.edicion) {
+      idDatoProfesional = this.datosProfesionalesForm.value['idDatoProfesional'];;
+    } else {
+      idDatoProfesional = '0';
+    }
+
+    this.datosProfesionalesService.insertarActualizarDatosProfesionales(this.idServidorPublico,
+      idDatoProfesional, datosProfesionalesDTO).pipe(switchMap(() => {
+        return this.datosProfesionalesService.obtenerDatosProfesionales(this.idServidorPublico);
+      })).subscribe(data => {
+        this.datosProfesionales = data.response;
+
+        this.messageService.clear('c');
+        this.messageService.add({ key: 'd', severity: 'success', summary: "Resultado", detail: "La operación se realizó correctamente." });
+        this.displayDialog = false;
+        this.bitacoraService.registrar(this.idServidorPublico, 2, 2).subscribe(() => {
+          console.log('se registro bitacora');
+        });
+        this.spinner.hide();
+      }, err =>{
+        this.spinner.hide();
+        this.messageService.add({ key: 'd', severity: 'error', summary: "Resultado", detail: "Ocurrio un error" });
+      });
+
+
+    
+  }
+
+  rechazar() {
+    this.messageService.clear('c');
+  }
+  no() {
+    this.displayDialog = false;
+  }
+
+
+  seleccionaDatoProfesional(datos: DatosProfesionales) {
+    this.edicion = true;
+    console.log(datos);
+    let fechaEmisionCertificado = moment(datos.FECHAEMISIONCERTIFICADO, 'YYYY-MM-DD').toDate();
+    let fechaVigenciaCertificado = moment(datos.FECHAVIGENCIACERTIFICADO, 'YYYY-MM-DD').toDate();
+
+    this.datosProfesionalesForm = this.fb.group({
+      'idNivelEstudios': new FormControl(datos.IDNIVELESTUDIOS, Validators.required),
+      'fechaEmisionCertificado': new FormControl(fechaEmisionCertificado, Validators.required),
+      'fechaVigenciaCertificado': new FormControl(fechaVigenciaCertificado, Validators.required),
+      'nombreCertificado': new FormControl(datos.NOMBRECERTIFICADO, Validators.required),
+      'idTipoCertificado': new FormControl(datos.IDTIPOCERTIFICADO, Validators.required),
+      'noCertificado': new FormControl(datos.NOCERTIFICADO, Validators.required),
+      'idDatoProfesional': new FormControl(datos.IDDATOPROFESIONAL),
+      'idEmisor': new FormControl('')
+    });
+    this.displayDialog = true;
+  }
+  eliminaDatoProfesional(datos: DatosProfesionales) {
+    
+    this.messageService.clear('c');
+    this.confirmationService.confirm({
+      message: "¿Estás seguro de que deseas eliminar el registro?",
+      accept: () => {
+        this.spinner.show();
+        this.datosProfesionalesService.eliminarDatosProfesionales(this.idServidorPublico,
+          datos.IDDATOPROFESIONAL).pipe(switchMap(() => {
+            return this.datosProfesionalesService.obtenerDatosProfesionales(this.idServidorPublico);
+          })).subscribe(data => {
+           
+            this.datosProfesionales = data.response;
+            
+            this.messageService.clear('c');
+            this.messageService.add({ key: 'd', severity: 'success', summary: "Resultado", detail: "Se eliminó correctamente." });
+            this.displayDialog = false;
+
+            this.bitacoraService.registrar(this.idServidorPublico, 3, 3).subscribe(() => {
+              console.log('se registro bitacora');
+            });
+            this.spinner.hide();
+          });
+
+      }
+    });
+
+  }
+
+  iniciarCatalogos() {
+    //Carga Catalogos Nivel de Estudios
+    this.generalesService.consultaCatalogoTituloCarrera().subscribe(
+      data => {
+        for (let index = 0; index < data.response.length; index++) {
+          let nivelEstudios = new Combo();
+          nivelEstudios.label = data.response[index].NOMBRECTITULOCARRERA;
+          nivelEstudios.value = data.response[index].IDTITULOCARRERA;
+          this.cmbNivelEstudios.push(nivelEstudios);
+        }
+      }, err => {
+        this.messageService.add({ severity: 'error', summary: "Resultado", detail: "Ocurrio un error contactar al adminstrador" });
+
+      });
+    //Carga Catalogos Certificados
+    this.generalesService.consultaCatalogoTipoCertificado().subscribe(
+      data => {
+        for (let index = 0; index < data.response.length; index++) {
+          let certificado = new Combo();
+          certificado.label = data.response[index].NOMBRECERTIFICADO;
+          certificado.value = data.response[index].IDTIPOCERTIFICADO;
+          this.cmbTipoCertificado.push(certificado);
+        }
+      }, err => {
+        this.messageService.add({ severity: 'error', summary: "Resultado", detail: "Ocurrio un error contactar al adminstrador" });
+
+      });
+    //Carga Catalogos Emisor de Certificado
+    this.datosProfesionalesService.obtenerEmisorCertificado()
+      .subscribe(data => {
+        for (let index = 0; index < data.response.length; index++) {
+          let emisor = new Combo();
+          emisor.label = data.response[index].NOMBREEMISOR;
+          emisor.value = data.response[index].IDEMISOR;
+          this.cmbEmisores.push(emisor);
+        }
+      }, err => {
+        this.messageService.add({ severity: 'error', summary: "Resultado", detail: "Ocurrio un error contactar al adminstrador" });
+
+      });
+
+
+  }
+
+  iniciarForm() {
+    this.datosProfesionalesForm = this.fb.group({
+      'idNivelEstudios': new FormControl('', Validators.required),
+      'fechaEmisionCertificado': new FormControl('', Validators.required),
+      'fechaVigenciaCertificado': new FormControl('', Validators.required),
+      'nombreCertificado': new FormControl('', Validators.required),
+      'idTipoCertificado': new FormControl('', Validators.required),
+      'noCertificado': new FormControl('', Validators.required),
+      'idDatoProfesional': new FormControl(''),
+      'idEmisor': new FormControl('')
+    });
+  }
+
+
+  iniciaCalendario() {
+    this.es = {
+      firstDayOfWeek: 1,
+      dayNames: ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
+      dayNamesShort: ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"],
+      dayNamesMin: ["D", "L", "M", "X", "J", "V", "S"],
+      monthNames: ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
+      monthNamesShort: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"],
+      today: 'Hoy',
+      clear: 'Borrar'
+    }
+  }
+
+
+  /**********************Notificaciones Etiquetas************************************** */
+ //Metodo Obtener notificaciones
+obtenerNotificaciones() {
+  console.log('Dentro2 de obtenerNotificaciones');
+  
+  
+  this.utilsService.obtenerNotificaciones(this.idServidorPublico).subscribe(data => {
+    
+    data.forEach(obj => {
+
+      this.descnotifica = obj[0];
+      this.idcancelar = obj[1];
+
+
+      if(this.index <= 4 ){
+          this.index++;
+          
+          this.messageService.add({key:'notifi', severity:'warn', summary: 
+          'Tienes Notificaciones Por Revisar', detail: this.descnotifica});
+         
+          /*Cancelando Notificaciones*/
+          this.utilsService.cancelarNotificaciones(this.idcancelar).subscribe();
+      }
+
+
+      console.log('-------------------');
+      
+  });
+
+  });
+
+  console.log('Saliendo2 de obtenerNotificaciones');
+  
+
+}
+
+
+
+}
